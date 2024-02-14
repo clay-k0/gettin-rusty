@@ -16,21 +16,21 @@
 use std::collections::HashMap;
 
 fn main() {
-  let mut furniture_store = HashMap::new();
-  furniture_store.insert("Chairs",5);
-  furniture_store.insert("Beds", 3);
-  furniture_store.insert("Tables", 2);
-  furniture_store.insert("Couches", 0);
+    let mut furniture_store = HashMap::new();
+    furniture_store.insert("Chairs", 5);
+    furniture_store.insert("Beds", 3);
+    furniture_store.insert("Tables", 2);
+    furniture_store.insert("Couches", 0);
 
-  let mut total_stock = 0;
+    let mut total_stock = 0;
 
-  for (product, stock) in furniture_store.iter() {
-    if stock == &0 {
-      println!("{:?}: Out of stock", product);
-    }else {
-      println!("{:?}: {:?} in stock", product,stock);
-      total_stock += stock;
+    for (product, stock) in furniture_store.iter() {
+        if stock == &0 {
+            println!("{:?}: Out of stock", product);
+        } else {
+            println!("{:?}: {:?} in stock", product, stock);
+            total_stock += stock;
+        }
     }
-  }
-  println!("\nTotal items in stock: {}", total_stock);
+    println!("\nTotal items in stock: {}", total_stock);
 }

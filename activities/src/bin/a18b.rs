@@ -82,7 +82,10 @@ enum AuthorizationStatus {
     Deny,
 }
 
-fn authorize(employee_name: &str, location: ProtectedLocation) -> Result<AuthorizationStatus, String> {
+fn authorize(
+    employee_name: &str,
+    location: ProtectedLocation,
+) -> Result<AuthorizationStatus, String> {
     // * Write the body of the `authorize` function. The steps to authorize a user
     //   are:
     //     1. Connect to the database
