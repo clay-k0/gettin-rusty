@@ -6,7 +6,6 @@
 // Notes:
 // * Use the existing find_user function to locate a user
 // * Use the map function to create the User
-// * Print out the User struct if found, or a "not found" message if not
 
 #[derive(Debug)]
 struct User {
@@ -25,4 +24,16 @@ fn find_user(name: &str) -> Option<i32> {
     }
 }
 
-fn main() {}
+fn main() {
+    let user_name = "matt";
+    let user = find_user(user_name).map(|user_id| User {
+        user_id,
+        name: user_name.to_owned(),
+    });
+
+    // * Print out the User struct if found, or a "not found" message if not
+    match user {
+        Some(user) => println!("{:?}", user),
+        None => println!("User Not Found"),
+    }
+}
