@@ -8,7 +8,7 @@
 // * (OPTIONAL) Read the documentation section `Formatting and Parsing`
 //   for examples on how to create custom time formats
 
-use chrono::{DateTime, Local};
+use chrono::prelude::*;
 
 fn main() {
     let local: DateTime<Local> = Local::now();
