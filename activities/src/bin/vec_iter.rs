@@ -3,7 +3,7 @@ fn main() {
 
     let _plus_one: Vec<_> = numbers.iter().map(|num| num + 1).collect();
 
-    let _new_numbers: Vec<_> = numbers.iter().filter(|num| num > &&2).collect();
+    let _filtered_numbers: Vec<_> = numbers.iter().filter(|num| num > &&2).collect();
 
     let _find_number = numbers.iter().find(|num| num == &&9);
 
