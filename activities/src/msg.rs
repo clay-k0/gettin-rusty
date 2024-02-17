@@ -13,5 +13,3 @@ pub fn capitalize(msg: &str) -> std::borrow::Cow<'_, str> {
 pub fn exciting(msg: &str) -> String {
     format!("{}!", msg)
 }
-
-fn main() {}
