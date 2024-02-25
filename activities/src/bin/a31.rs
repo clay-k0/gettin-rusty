@@ -12,11 +12,59 @@
 //   * Tile - $15 per square meter
 //   * Wood - $20 per square meter
 // * Square meters must be taken into account
-//
-// Notes:
-// * Create a trait that can be used to retrieve the cost of a material
-// * Create trait objects and store them in a vector for processing
-// * Use a function to calculate the total cost
-// * Process at least 3 different materials
 
-fn main() {}
+// * Create a trait that can be used to retrieve the cost of a material
+trait Material {
+    fn cost_per_sq_meter(&self) -> f64;
+    fn square_meters(&self) -> f64;
+    fn total_cost(&self) -> f64 {
+        self.cost_per_sq_meter() * self.square_meters()
+    }
+}
+
+struct Carpet(f64);
+impl Material for Carpet {
+    fn cost_per_sq_meter(&self) -> f64 {
+        10.0
+    }
+    fn square_meters(&self) -> f64 {
+        self.0
+    }
+}
+
+struct Tile(f64);
+impl Material for Tile {
+    fn cost_per_sq_meter(&self) -> f64 {
+        15.0
+    }
+    fn square_meters(&self) -> f64 {
+        self.0
+    }
+}
+
+struct Wood(f64);
+impl Material for Wood {
+    fn cost_per_sq_meter(&self) -> f64 {
+        20.0
+    }
+    fn square_meters(&self) -> f64 {
+        self.0
+    }
+}
+
+// * Use a function to calculate the total cost
+fn calculate_cost(materials: Vec<Box<dyn Material>>) -> f64 {
+    materials.iter().map(|material| material.total_cost()).sum()
+}
+
+fn main() {
+    // * Process at least 3 different materials
+    let carpet = Box::new(Carpet(10.0));
+    let tile = Box::new(Tile(15.0));
+    let wood = Box::new(Wood(20.0));
+
+    // * Create trait objects and store them in a vector for processing
+    let materials: Vec<Box<dyn Material>> = vec![carpet, tile, wood];
+    let materials_cost = calculate_cost(materials);
+    println!("Total Cost: ${:?} per square meter", materials_cost);
+}
