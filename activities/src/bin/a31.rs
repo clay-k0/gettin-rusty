@@ -66,5 +66,5 @@ fn main() {
     // * Create trait objects and store them in a vector for processing
     let materials: Vec<Box<dyn Material>> = vec![carpet, tile, wood];
     let materials_cost = calculate_cost(materials);
-    println!("Total Cost: ${:?} per square meter", materials_cost);
+    println!("Total Cost: ${}", materials_cost);
 }
