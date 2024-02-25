@@ -35,8 +35,8 @@ struct Truck;
 impl Body for Truck {}
 
 #[derive(Debug)]
-struct Car;
-impl Body for Car {}
+struct Sedan;
+impl Body for Sedan {}
 
 #[derive(Debug)]
 struct Blue;
@@ -48,8 +48,8 @@ impl Color for Green {}
 
 fn main() {
     let green_truck = Vehicle::new(Truck, Green);
-    let blue_car = Vehicle::new(Car, Blue);
+    let blue_sedan = Vehicle::new(Sedan, Blue);
 
     println!("The {:?} is {:?}", green_truck.body, green_truck.color);
-    println!("The {:?} is {:?}", blue_car.body, blue_car.color);
+    println!("The {:?} is {:?}", blue_sedan.body, blue_sedan.color);
 }
