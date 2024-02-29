@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 // Topic: New type pattern
 //
 // Requirements:
@@ -9,7 +10,7 @@
 //   * Each new type should implement a `new` function
 // * Create a function for each type of clothes (shoes, shirt, pants)
 //   that accepts the new type specific to that type of clothing
-
+#[derive(Debug)]
 enum Color {
     Black,
     Blue,
@@ -23,4 +24,48 @@ enum Color {
     Yellow,
 }
 
-fn main() {}
+#[derive(Debug)]
+struct Shoes(Color);
+impl Shoes {
+    pub fn new(color: Color) -> Self {
+        Self(color)
+    }
+}
+
+#[derive(Debug)]
+struct Shirt(Color);
+impl Shirt {
+    pub fn new(color: Color) -> Self {
+        Self(color)
+    }
+}
+
+#[derive(Debug)]
+struct Pants(Color);
+impl Pants {
+    pub fn new(color: Color) -> Self {
+        Self(color)
+    }
+}
+
+fn display_shoes_color(shoes: Shoes) {
+    println!("{:?}", shoes)
+}
+
+fn display_shirt_color(shirt: Shirt) {
+    println!("{:?}", shirt)
+}
+
+fn display_pants_color(pants: Pants) {
+    println!("{:?}", pants)
+}
+
+fn main() {
+    let blue_shoes = Shoes::new(Color::Blue);
+    let purple_shirt = Shirt::new(Color::Purple);
+    let pink_pants = Pants::new(Color::Custom(String::from("Pink")));
+
+    display_shoes_color(blue_shoes);
+    display_shirt_color(purple_shirt);
+    display_pants_color(pink_pants);
+}
