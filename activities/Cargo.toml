@@ -9,5 +9,6 @@ path = "src/demolib.rs"
 
 [dependencies]
 chrono = "0.4.34"
+thiserror = "1.0"
 
 
