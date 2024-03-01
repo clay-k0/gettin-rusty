@@ -25,7 +25,6 @@ struct CheckIn(LuggageID);
 struct OnLoading(LuggageID);
 struct OffLoading(LuggageID);
 struct AwaitingPickup(LuggageID);
-
 struct EndCustody(LuggageID);
 
 impl Luggage {
