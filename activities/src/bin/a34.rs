@@ -19,7 +19,6 @@ use chrono::Utc;
 
 #[derive(Debug, Clone, Copy)]
 struct LuggageID(usize);
-
 struct Luggage(LuggageID);
 
 struct CheckIn(LuggageID);
