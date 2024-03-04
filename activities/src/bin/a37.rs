@@ -21,12 +21,48 @@
 //   * Hex digits use a radix value of 16
 // * Utilize the `thiserror` crate for your error type
 // * Run `cargo test --bin a37` to test your implementation
+use std::convert::TryFrom;
+use thiserror::Error;
 
 #[derive(Debug, Eq, PartialEq)]
 struct Rgb(u8, u8, u8);
 
+#[derive(Debug, Error)]
+enum RgbError {
+    #[error("Hex Colors Must Begin With A Hash (#)")]
+    MissingHash,
+    #[error("Failed To Parse Hex Digit: {0}")]
+    ParseError(#[from] std::num::ParseIntError),
+    #[error("Invalid Hex Length (Should be 7 including the hash)")]
+    LengthError,
+}
+
+impl TryFrom<&str> for Rgb {
+    type Error = RgbError;
+
+    fn try_from(hex: &str) -> Result<Self, Self::Error> {
+        if !hex.starts_with('#') {
+            return Err(RgbError::MissingHash);
+        }
+
+        if hex.len() != 7 {
+            return Err(RgbError::LengthError);
+        }
+
+        let (r, g, b) = (
+            u8::from_str_radix(&hex[1..=2], 16)?,
+            u8::from_str_radix(&hex[3..=4], 16)?,
+            u8::from_str_radix(&hex[5..=6], 16)?,
+        );
+
+        Ok(Self(r, g, b))
+    }
+}
+
 fn main() {
     // Use `cargo test --bin a37` to test your implementation
+    let hex: &str = "#FFFFFF";
+    println!("{:?}", Rgb::try_from(hex));
 }
 
 #[cfg(test)]
