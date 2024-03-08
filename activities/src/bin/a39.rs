@@ -21,13 +21,15 @@
 //   by telling the thread to self-terminate
 // * Use `cargo test --bin a39` to test your program to ensure all cases are covered
 
+use colored::Colorize;
 use crossbeam_channel::{unbounded, Receiver};
 use std::thread::{self, JoinHandle};
 
 enum LightMsg {
-    // Add additional variants needed to complete the exercise
     ChangeColor(u8, u8, u8),
     Disconnect,
+    Off,
+    On,
 }
 
 enum LightStatus {
@@ -36,10 +38,58 @@ enum LightStatus {
 }
 
 fn spawn_light_thread(receiver: Receiver<LightMsg>) -> JoinHandle<LightStatus> {
-    // Add code here to spawn a thread to control the light bulb
+    thread::spawn(move || {
+        let mut light_status = LightStatus::Off;
+        loop {
+            if let Ok(msg) = receiver.recv() {
+                match msg {
+                    LightMsg::ChangeColor(r, g, b) => {
+                        println!("Light Color Changed To: {}", "   ".on_truecolor(r, g, b));
+                        match light_status {
+                            LightStatus::Off => println!("Light is currently off.\n"),
+                            LightStatus::On => println!("Light is currently on.\n"),
+                        }
+                    }
+                    LightMsg::On => {
+                        println!("Turned lights on\n");
+                        light_status = LightStatus::On;
+                    }
+                    LightMsg::Off => {
+                        println!("Turned lights off\n");
+                        light_status = LightStatus::Off;
+                    }
+                    LightMsg::Disconnect => {
+                        println!("Disconnected");
+                        light_status = LightStatus::Off;
+                        break;
+                    }
+                }
+            } else {
+                println!("Channel disconnected");
+                light_status = LightStatus::Off;
+                break;
+            }
+        }
+        light_status
+    })
 }
 
-fn main() {}
+fn main() {
+    let (s, r) = unbounded();
+    let light = spawn_light_thread(r);
+
+    s.send(LightMsg::On).expect("Couldn't turn light on");
+    s.send(LightMsg::ChangeColor(255, 255, 255))
+        .expect("Error Changing Color");
+    s.send(LightMsg::ChangeColor(255, 0, 0))
+        .expect("Error Changing Color");
+    s.send(LightMsg::ChangeColor(0, 255, 0))
+        .expect("Error Changing Color");
+    s.send(LightMsg::Off).expect("Couldn't turn light off");
+    s.send(LightMsg::Disconnect).expect("Couldn't Disconnect");
+
+    light.join().expect("Thread panicked");
+}
 
 #[cfg(test)]
 mod test {
