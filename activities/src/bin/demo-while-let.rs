@@ -11,6 +11,6 @@ fn main() {
     let mut numbers_iter = numbers.iter();
 
     while let Some(num) = numbers_iter.next() {
-        println!("num={:?}", num);
+        println!("num = {:?}", num);
     }
 }

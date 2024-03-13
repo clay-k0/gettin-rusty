@@ -1,7 +1,7 @@
-// Interior Mutability: Cell & RefCell
+// Demo: Interior Mutability: Cell & RefCell
 //
 // Note that mut and &mut should be preferred.
-// Use Cell & RefCell when it's not possbile to express your intetions otherwise
+// Cell & RefCell should be used when it's not possbile to express your intetions otherwise
 // Interior mutability is NOT thread safe (cannot be used in multithreaded code)
 
 use std::cell::{Cell, RefCell};
