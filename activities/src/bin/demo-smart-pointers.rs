@@ -1,55 +1,63 @@
 #![allow(warnings)]
 
+use std::cell::RefCell;
 use std::rc::Rc;
 
 #[derive(Debug)]
-enum VehicleType {
-    TwoDoor,
-    FourDoor,
+enum MenuItem {
+    Drink,
+    Salad,
 }
 
 #[derive(Debug)]
-struct Vehicle {
-    year: i32,
-    color: String,
-    make: String,
-    model: String,
-    vin: String,
-    doors: VehicleType,
+struct ItemOrder {
+    item: MenuItem,
+    quantity: u32,
 }
 
 #[derive(Debug)]
-struct Door {
-    // Create an Rc vehicle type since multiple doors can belong to a single car
-    vehicle: Rc<Vehicle>,
+struct TableOrder {
+    items: Vec<ItemOrder>,
 }
+
+fn new_table_order() -> TableOrder {
+    TableOrder {
+        items: vec![ItemOrder {
+            item: MenuItem::Drink,
+            quantity: 1,
+        }],
+    }
+}
+
+type Order = Rc<RefCell<Vec<TableOrder>>>;
+
+#[derive(Debug)]
+struct Chef(Order);
+#[derive(Debug)]
+struct WaitStaff(Order);
+#[derive(Debug)]
+struct Accounting(Order);
 
 fn main() {
-    // Create a reference counted pointer (Rc)
-    let my_car = Rc::new(Vehicle {
-        year: 2023,
-        color: "White".to_owned(),
-        make: "Toyota".to_owned(),
-        model: "GR86".to_owned(),
-        vin: "D3829SI".to_owned(),
-        doors: VehicleType::TwoDoor,
-    });
+    let orders: Order = Rc::new(RefCell::new(vec![]));
+    let chef = Chef(Rc::clone(&orders));
+    let wait_staff = WaitStaff(Rc::clone(&orders));
+    let account = Accounting(Rc::clone(&orders));
 
-    let left_door = Door {
-        // Make a new reference
-        vehicle: Rc::clone(&my_car),
-    };
+    let order = new_table_order();
 
-    let right_door = Door {
-        // Make another new reference
-        vehicle: Rc::clone(&my_car),
-    };
+    {
+        orders.borrow_mut().push(order);
+    }
 
-    drop(my_car);
+    // dgb (debug) just formats things nicer
+    dbg!(chef.0.borrow());
+    drop(chef);
+    dbg!(wait_staff.0.borrow());
+    drop(wait_staff);
+    dbg!(account.0.borrow());
 
-    // Even after dropping the first owner of my_car, it is still owned
-    // by the left_door and right_door since we cloned the car. As long as
-    // one owner is still around, the data still exists:
-    println!("Left Door Belongs to {:?}", left_door.vehicle);
-    println!("Right Door Belongs to {:?}", right_door.vehicle);
+    // Even after dropping the chef and wait_staff, we still
+    // receive the same output. We used Rc & Refcell to share
+    // mutable data throughout the program.
 }
