@@ -30,7 +30,7 @@ enum VehicleType {
     Truck,
 }
 
-#[derive(Debug, Hash, PartialEq, PartialOrd)]
+#[derive(Debug, Hash, PartialEq)]
 enum RentalCarStatus {
     Available,
     Unavailable,
