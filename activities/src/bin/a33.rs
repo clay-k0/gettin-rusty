@@ -19,5 +19,6 @@ fn longest<'a>(word_one: &'a str, word_two: &'a str) -> &'a str {
 fn main() {
     let short = "hello";
     let long = "this is longer";
+
     println!("{}", longest(short, long));
 }
