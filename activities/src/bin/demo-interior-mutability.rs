@@ -2,7 +2,8 @@
 //
 // Note that mut and &mut should be preferred.
 // Cell & RefCell should be used when it's not possbile to express your intetions otherwise
-// Interior mutability is NOT thread safe (cannot be used in multithreaded code)
+//
+// Interior mutability is NOT thread safe (cannot be used in multithreaded code).
 
 use std::cell::{Cell, RefCell};
 
